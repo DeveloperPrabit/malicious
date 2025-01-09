@@ -3,10 +3,10 @@ name: Build and Release .exe
 on:
   push:
     tags:
-      - 'v*' # Trigger workflow only when a version tag (e.g., v1.0.6) is pushed
+      - 'v*'  # Trigger workflow only when a version tag (e.g., v1.0.6) is pushed
 
 permissions:
-  contents: write # Allows creating a release and uploading assets
+  contents: write  # Allows creating a release and uploading assets
 
 jobs:
   build-and-release:
@@ -44,7 +44,7 @@ jobs:
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # Use PAT or GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use GitHub token for authentication
 
       # Step 6: Upload the built .exe file as a release asset
       - name: Upload Release Asset
@@ -55,4 +55,4 @@ jobs:
           asset_name: main.exe
           asset_content_type: application/octet-stream
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # Use PAT or GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use GitHub token for authentication
