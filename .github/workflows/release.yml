@@ -25,13 +25,14 @@ jobs:
         run: |
           pip install pyinstaller
 
-      # Step 4: Build the executable
+      # Step 4: Build the executable (Ensure the path is correct)
       - name: Build .exe
         run: |
           pyinstaller --onefile main.py
-        working-directory: src  # Adjust this if `main.py` is inside a subfolder like `src`
+        # If `main.py` is in the root, you can comment out or remove the `working-directory` line:
+        # working-directory: src  # Update if `main.py` is in a different folder
 
-      # Step 5: Prepare Release Asset Upload
+      # Step 5: Create Release (if not exists)
       - name: Create Release (if not exists)
         id: create_release
         uses: actions/create-release@v1
