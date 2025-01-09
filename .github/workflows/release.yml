@@ -3,36 +3,39 @@ name: Build and Release .exe
 on:
   push:
     tags:
-      - 'v*'  # Trigger on version tags, e.g., v1.0, v1.1
+      - 'v*' # Trigger workflow only when a version tag (e.g., v1.0.6) is pushed
 
 permissions:
-  contents: write  # Allows creating release and uploading assets
-  id-token: write  # Allows interacting with the GitHub API
+  contents: write # Allows creating a release and uploading assets
 
 jobs:
   build-and-release:
     runs-on: windows-latest
 
     steps:
+      # Step 1: Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           pip install pyinstaller
           pip install requests
           pip install psutil
 
+      # Step 4: Build the executable file
       - name: Build .exe
-        run: |
-          pyinstaller --onefile main.py
+        run: pyinstaller --onefile main.py
 
-      - name: Create Release (if not exists)
+      # Step 5: Create a GitHub release if it doesn't exist
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         with:
@@ -41,8 +44,9 @@ jobs:
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # Use PAT or GITHUB_TOKEN
 
+      # Step 6: Upload the built .exe file as a release asset
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
@@ -51,4 +55,4 @@ jobs:
           asset_name: main.exe
           asset_content_type: application/octet-stream
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # Use PAT or GITHUB_TOKEN
