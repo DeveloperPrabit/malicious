@@ -25,6 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pyinstaller
+          pip install requests
+          pip install psutil
 
       - name: Build .exe
         run: |
