@@ -1,0 +1,35 @@
+name: Build and Release .exe
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags, e.g., v1.0, v1.1
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+      
+      - name: Build .exe
+        run: |
+          pyinstaller --onefile main.py
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/main.exe
+          asset_name: main.exe
+          asset_content_type: application/octet-stream
