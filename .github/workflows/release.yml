@@ -27,6 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pyinstaller
+          pip install pynput
           pip install requests
           pip install psutil
 
