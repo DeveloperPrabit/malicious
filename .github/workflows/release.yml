@@ -5,34 +5,31 @@ on:
     tags:
       - 'v*'  # Trigger on version tags, e.g., v1.0, v1.1
 
+permissions:
+  contents: write  # Allows creating release and uploading assets
+  id-token: write  # Allows interacting with the GitHub API
+
 jobs:
   build-and-release:
     runs-on: windows-latest
 
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           pip install pyinstaller
 
-      # Step 4: Build the executable (Ensure the path is correct)
       - name: Build .exe
         run: |
           pyinstaller --onefile main.py
-        # If `main.py` is in the root, you can comment out or remove the `working-directory` line:
-        # working-directory: src  # Update if `main.py` is in a different folder
 
-      # Step 5: Create Release (if not exists)
       - name: Create Release (if not exists)
         id: create_release
         uses: actions/create-release@v1
@@ -44,7 +41,6 @@ jobs:
           draft: false
           prerelease: false
 
-      # Step 6: Upload the built executable
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
